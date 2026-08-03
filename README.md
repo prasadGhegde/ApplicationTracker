@@ -158,15 +158,40 @@ local-data/gmail-opportunities.sqlite
 
 The schema stores raw read-only email snapshots, application settings, opportunities, thread links, timelines, and extraction runs. Initialization creates the database automatically.
 
-## Remote phone access
+## Private access with Tailscale
 
-Opportunity Desk listens on `127.0.0.1` by default. For private phone access, use a VPN such as Tailscale Serve rather than exposing port 3000 publicly:
+Opportunity Desk listens on `127.0.0.1` by default, which keeps it unavailable to the local network and public internet. [Tailscale](https://tailscale.com/) can make that local service privately available to a phone or another trusted device from anywhere.
 
-```bash
-tailscale serve --bg 3000
-```
+1. Install Tailscale on the computer running Opportunity Desk.
+2. Install Tailscale on the phone or other client device.
+3. Sign in to both using the same Tailscale account.
+4. Keep Opportunity Desk running on port 3000.
+5. On the host computer, run:
 
-Add the resulting HTTPS origin to `TRUSTED_ORIGINS` before starting the app.
+   ```bash
+   tailscale serve --bg 3000
+   ```
+
+6. Tailscale returns a private HTTPS address similar to:
+
+   ```text
+   https://opportunity-desk.example-tailnet.ts.net
+   ```
+
+7. Add that exact origin when starting Opportunity Desk:
+
+   ```bash
+   export TRUSTED_ORIGINS="https://opportunity-desk.example-tailnet.ts.net"
+   npm start
+   ```
+
+Use **Tailscale Serve**, not Tailscale Funnel. Serve limits access to authenticated devices in the tailnet; Funnel would make the service publicly accessible. The host computer must remain powered on, awake, online, and connected to Tailscale.
+
+### About the live instance
+
+Opportunity Desk is actively dogfooded: this repository was built while the application itself was being used to track a real job search. If you are reading information from inside a running Opportunity Desk instance rather than browsing the GitHub source, there is a good chance you are looking at the live deployment of this exact application—not a demonstration dataset.
+
+That live dashboard can contain private email-derived application information, so its Tailscale address is intentionally accessible only inside the owner's tailnet. Cloning this repository creates a separate installation with its own local database and credentials; no live application data is included in Git.
 
 ## Development commands
 
