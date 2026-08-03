@@ -187,11 +187,11 @@ Opportunity Desk listens on `127.0.0.1` by default, which keeps it unavailable t
 
 Use **Tailscale Serve**, not Tailscale Funnel. Serve limits access to authenticated devices in the tailnet; Funnel would make the service publicly accessible. The host computer must remain powered on, awake, online, and connected to Tailscale.
 
-### About the live instance
+### A slightly recursive note
 
-Opportunity Desk is actively dogfooded: this repository was built while the application itself was being used to track a real job search. If you are reading information from inside a running Opportunity Desk instance rather than browsing the GitHub source, there is a good chance you are looking at the live deployment of this exact application—not a demonstration dataset.
+If you are looking at this repository because you are considering me for a role, there is a good chance that very application is already being tracked in the live Opportunity Desk. In other words: the application may be tracking the application.
 
-That live dashboard can contain private email-derived application information, so its Tailscale address is intentionally accessible only inside the owner's tailnet. Cloning this repository creates a separate installation with its own local database and credentials; no live application data is included in Git.
+The live dashboard remains private inside the owner's tailnet. Cloning this repository creates a separate installation with its own local database and credentials; no live application data is included in Git.
 
 ## Development commands
 
