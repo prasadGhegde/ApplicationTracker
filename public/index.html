@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="description" content="Opportunity Desk turns application conversations into a clear, actionable pipeline.">
+    <title>Opportunity Desk</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="Opportunity Desk home">
+          <span class="brand-mark">OD</span>
+          <span class="brand-copy"><strong>Opportunity Desk</strong><small>Application intelligence</small></span>
+        </a>
+
+        <nav aria-label="Primary navigation">
+          <a class="nav-item active" href="#dashboard"><span class="nav-icon">⌂</span>Dashboard</a>
+          <a class="nav-item" href="#opportunities"><span class="nav-icon">◎</span>Opportunities</a>
+        </nav>
+
+        <div class="sidebar-spacer"></div>
+        <section class="source-card" aria-labelledby="source-heading">
+          <div class="source-heading">
+            <span class="source-icon">M</span>
+            <div><strong id="source-heading">Gmail</strong><small id="account-label">Checking connection…</small></div>
+            <span class="health-dot" id="health-dot"></span>
+          </div>
+          <p id="sync-label">Connection status loading.</p>
+          <a class="text-button" id="connect-link" href="/auth/google">Connect account</a>
+        </section>
+        <p class="sidebar-version">Opportunity Desk · v2</p>
+      </aside>
+
+      <div class="main-column">
+        <header class="topbar">
+          <div>
+            <p class="breadcrumb">Workspace / Dashboard</p>
+            <h1>Good evening<span class="heading-dot">.</span></h1>
+          </div>
+          <div class="header-actions">
+            <button class="button button-ghost" id="analyze-button" type="button">Analyze all pending</button>
+            <div class="initial-controls" id="initial-controls"><select id="initial-limit" aria-label="Initial emails to analyze"><option value="50">50 emails</option><option value="100">100 emails</option><option value="150">150 emails</option><option value="200" selected>200 emails</option><option value="250">250 emails</option></select><button class="button button-ghost" id="import-button" type="button">Initial Analyze</button></div>
+            <button class="button button-ghost sync-email-button" id="sync-button" type="button">Sync Email</button>
+            <button class="button button-ghost" id="settings-button" type="button">Settings</button>
+            <button class="button button-primary" id="add-button" type="button"><span>＋</span>Add opportunity</button>
+          </div>
+        </header>
+
+        <main id="dashboard">
+          <section class="metrics" aria-label="Pipeline metrics">
+            <article class="metric metric-featured">
+              <div class="metric-label"><span>Total opportunities</span><span class="metric-icon">↗</span></div>
+              <strong id="metric-total">—</strong>
+              <small>Across every channel</small>
+            </article>
+            <article class="metric"><div class="metric-label"><span>Active</span><span class="metric-pulse green"></span></div><strong id="metric-active">—</strong><small>Open and moving</small></article>
+            <article class="metric"><div class="metric-label"><span>Waiting</span><span class="metric-pulse amber"></span></div><strong id="metric-waiting">—</strong><small>Submitted or pending</small></article>
+            <article class="metric"><div class="metric-label"><span>Interviews</span><span class="metric-icon subtle">◫</span></div><strong id="metric-interviews">—</strong><small>Current stage</small></article>
+            <article class="metric"><div class="metric-label"><span>Offers</span><span class="metric-icon subtle">◇</span></div><strong id="metric-offers">—</strong><small>Offered or accepted</small></article>
+            <article class="metric"><div class="metric-label"><span>Rejections</span><span class="metric-icon subtle">×</span></div><strong id="metric-rejections">—</strong><small>Closed outcome</small></article>
+            <article class="metric"><div class="metric-label"><span>Response rate</span><span class="metric-icon subtle">%</span></div><strong id="metric-response">—</strong><small>Human replies to outreach</small></article>
+          </section>
+
+          <section class="panel" id="opportunities" aria-labelledby="opportunities-title">
+            <div class="panel-header">
+              <div><p class="section-kicker">PIPELINE</p><h2 id="opportunities-title">Opportunities</h2><p id="result-count">Loading records…</p></div>
+              <div class="view-tabs" aria-label="View options"><button class="view-tab active" type="button">All opportunities</button></div>
+            </div>
+
+            <div class="toolbar">
+              <label class="search-box">
+                <span aria-hidden="true">⌕</span>
+                <input id="search-input" type="search" placeholder="Search company, role, recruiter…" autocomplete="off">
+              </label>
+              <label class="filter-field"><span class="sr-only">Category</span><select id="category-filter"><option value="">All categories</option><option value="normal_application">Normal application</option><option value="cold_email">Cold email</option><option value="unsolicited">Unsolicited</option><option value="phd">PhD</option></select></label>
+              <label class="filter-field"><span class="sr-only">Status</span><select id="status-filter"><option value="">All statuses</option><option value="draft">Draft</option><option value="submitted">Submitted</option><option value="awaiting_response">Awaiting response</option><option value="replied">Replied</option><option value="screening">Screening</option><option value="assessment">Assessment</option><option value="interview">Interview</option><option value="offer">Offer</option><option value="accepted">Accepted</option><option value="rejected">Rejected</option><option value="withdrawn">Withdrawn</option><option value="closed">Closed</option></select></label>
+              <button class="icon-button" id="refresh-button" type="button" aria-label="Refresh opportunities">↻</button>
+            </div>
+
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Opportunity</th><th>Category</th><th>Status</th><th>Contact</th><th>Activity</th><th><span class="sr-only">Actions</span></th></tr></thead>
+                <tbody id="opportunity-rows"></tbody>
+              </table>
+              <div class="empty-state" id="empty-state" hidden>
+                <span class="empty-mark">◎</span><h3>No opportunities in this view</h3><p>Adjust the filters, add an opportunity, or analyze pending conversations.</p>
+                <button class="button button-primary" id="empty-add-button" type="button">Add opportunity</button>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div class="toast-region" id="toast-region" aria-live="polite"></div>
+
+    <dialog class="editor-dialog" id="editor-dialog">
+      <form id="opportunity-form" method="dialog">
+        <header class="dialog-header">
+          <div><p class="section-kicker" id="editor-kicker">NEW RECORD</p><h2 id="editor-title">Add opportunity</h2></div>
+          <button class="close-button" id="editor-close" type="button" aria-label="Close">×</button>
+        </header>
+        <div class="form-grid">
+          <label class="field span-2"><span>Company or institution</span><input name="company" maxlength="500" placeholder="e.g. Wandelbots"></label>
+          <label class="field span-2"><span>Role or PhD title</span><input name="jobTitle" maxlength="500" placeholder="e.g. Robotics Engineer"></label>
+          <label class="field"><span>Category</span><select name="category" required><option value="normal_application">Normal application</option><option value="cold_email">Cold email</option><option value="unsolicited">Unsolicited</option><option value="phd">PhD</option></select></label>
+          <label class="field"><span>Status</span><select name="status" required><option value="draft">Draft</option><option value="submitted">Submitted</option><option value="awaiting_response">Awaiting response</option><option value="replied">Replied</option><option value="screening">Screening</option><option value="assessment">Assessment</option><option value="interview">Interview</option><option value="offer">Offer</option><option value="accepted">Accepted</option><option value="rejected">Rejected</option><option value="withdrawn">Withdrawn</option><option value="closed">Closed</option></select></label>
+          <label class="field"><span>Recruiter or contact</span><input name="recruiterName" maxlength="500" placeholder="Full name"></label>
+          <label class="field"><span>Contact email</span><input name="recruiterEmail" type="email" maxlength="320" placeholder="name@company.com"></label>
+          <label class="field"><span>Location</span><input name="location" maxlength="500" placeholder="City, remote, hybrid…"></label>
+          <label class="field"><span>Application date</span><input name="applicationDate" type="date"></label>
+          <label class="field span-2"><span>Summary</span><textarea name="summary" rows="3" maxlength="2000" placeholder="Short current-state summary"></textarea><small>Editing an AI-generated field creates a protected manual override.</small></label>
+          <label class="field span-2"><span>Notes</span><textarea name="notes" rows="4" maxlength="10000" placeholder="Private context, next steps, or reminders"></textarea></label>
+        </div>
+        <footer class="dialog-footer">
+          <button class="button button-danger-text" id="delete-from-editor" type="button" hidden>Delete opportunity</button>
+          <span class="footer-spacer"></span>
+          <button class="button button-ghost" id="editor-cancel" type="button">Cancel</button>
+          <button class="button button-primary" type="submit" id="save-button">Save opportunity</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog class="detail-dialog" id="detail-dialog">
+      <div class="detail-shell">
+        <header class="detail-header">
+          <div class="detail-heading"><span class="company-avatar" id="detail-avatar">O</span><div><p class="section-kicker" id="detail-category">OPPORTUNITY</p><h2 id="detail-company">Loading…</h2><p id="detail-role"></p></div></div>
+          <div class="detail-actions"><button class="button button-ghost" id="detail-edit" type="button">Edit</button><button class="close-button" id="detail-close" type="button" aria-label="Close">×</button></div>
+        </header>
+        <div id="detail-content"></div>
+      </div>
+    </dialog>
+
+    <dialog class="confirm-dialog" id="confirm-dialog">
+      <div class="confirm-content"><span class="confirm-icon">×</span><h2>Delete opportunity?</h2><p>This removes the opportunity from your pipeline. Synced source messages remain unchanged.</p><div><button class="button button-ghost" id="delete-cancel" type="button">Cancel</button><button class="button button-danger" id="delete-confirm" type="button">Delete</button></div></div>
+    </dialog>
+
+    <dialog class="editor-dialog settings-dialog" id="settings-dialog">
+      <form id="settings-form" method="dialog">
+        <header class="dialog-header"><div><p class="section-kicker">CONFIGURATION</p><h2>Settings</h2></div><button class="close-button" id="settings-close" type="button" aria-label="Close">×</button></header>
+        <div class="form-grid">
+          <div class="settings-intro span-2"><p>Add credentials once. Secrets are stored in an owner-readable runtime file excluded from Git and are never shown again.</p></div>
+          <label class="field span-2"><span>Gmail OAuth client ID</span><input name="gmailClientId" maxlength="500" autocomplete="off" placeholder="…apps.googleusercontent.com"><small id="gmail-client-status"></small></label>
+          <label class="field span-2"><span>Gmail OAuth client secret</span><input name="gmailClientSecret" type="password" maxlength="500" autocomplete="new-password" placeholder="Leave blank to keep the saved secret"></label>
+          <label class="field span-2"><span>OpenAI API key</span><input name="openaiApiKey" type="password" maxlength="500" autocomplete="new-password" placeholder="Leave blank to keep the saved key"><small id="openai-key-status"></small></label>
+          <div class="settings-help span-2"><strong>Google redirect URI</strong><code id="oauth-redirect-uri"></code><p>Add this exact URI to the OAuth client in Google Cloud Console. Gmail access remains read-only.</p></div>
+        </div>
+        <footer class="dialog-footer"><a class="button button-ghost" id="settings-connect-link" href="/auth/google">Connect Gmail</a><span class="footer-spacer"></span><button class="button button-ghost" id="settings-cancel" type="button">Cancel</button><button class="button button-primary" id="settings-save" type="submit">Save settings</button></footer>
+      </form>
+    </dialog>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

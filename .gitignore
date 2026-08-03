@@ -1,0 +1,15 @@
+node_modules/
+dist/
+local-data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+client_secret_*.json
+credentials*.json
+token*.json
+.env
+.env.*
+!.env.example
+.DS_Store
+npm-debug.log*
+coverage/

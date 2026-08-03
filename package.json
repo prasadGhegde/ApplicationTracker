@@ -1,0 +1,32 @@
+{
+  "name": "opportunity-desk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Application intelligence and opportunity pipeline",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "npm run build && node dist/server.js",
+    "build": "tsc -p tsconfig.json",
+    "start:prod": "node dist/server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.test.json",
+    "test": "node --import tsx --test test/**/*.test.ts",
+    "test:extraction": "tsx src/scripts/test-openai-extraction.ts"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "google-auth-library": "10.5.0",
+    "googleapis": "^160.0.0",
+    "openai": "^7.3.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.10.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=24.15.0"
+  }
+}
