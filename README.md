@@ -217,7 +217,4 @@ test/                Deterministic integration and unit tests
 ```
 
 ## Security notes
-
-- Never commit `local-data/`, `.env`, OAuth JSON files, API keys, tokens, or SQLite databases.
 - Do not expose Opportunity Desk directly to the public internet without adding user authentication and a hardened deployment layer.
-- Rotate any credential that has been pasted into chat, logs, screenshots, or issue reports.
